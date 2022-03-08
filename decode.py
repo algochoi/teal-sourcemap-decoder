@@ -34,15 +34,17 @@ def get_raw_source_map(source_map_path: str) -> str:
     return data["mapping"]
 
 
-def line_to_pc_map(l: List[int]) -> Dict[int, int]:
+def line_to_pc_map(l: List[int]) -> Dict[int, List[int]]:
     line_map = {}
     for index, line_num in enumerate(l):
         if line_num is not None:  # be careful for '0' checks!
-            line_map[line_num] = index
+            if line_num not in line_map:
+                line_map[line_num] = []
+            line_map[line_num].append(index)
     return line_map
 
 
-def annotate_map_to_source(source_map: Dict[int, int], source_file_path: str):
+def annotate_map_to_source(source_map: Dict[int, List[int]], source_file_path: str):
     source_lines = []
     output_path = source_file_path.split(".")
     output_path[0] += "_annotated"
@@ -80,9 +82,9 @@ def decode_source_map(
     annotate_map_to_source(line_map, source_file_path)
 
     if verbose:
-        print(raw_source_map)
-        print(pc_list)
-        print(line_map)
+        print(f'Raw source map: {raw_source_map}')
+        print(f"PC list: {pc_list}")
+        print(f"Line map: {line_map}")
 
     if tabulate:
         print("Tabulating is not supported yet :(")
