@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import sys
 from typing import Dict, List
 
 
@@ -13,10 +12,7 @@ class Decoder:
         # or inherit rules from this class.
 
     def decode_int_value(self, value: str) -> int:
-        try:
-            return int(value)
-        except ValueError as e:
-            raise e
+        return int(value)
 
     def decode_mapping(self, raw_map: str) -> List[int]:
         raw_mapping = raw_map.split(self.line_delimiter)
@@ -48,7 +44,9 @@ def line_to_pc_map(l: List[int]) -> Dict[int, int]:
 
 def annotate_map_to_source(source_map: Dict[int, int], source_file_path: str):
     source_lines = []
-    output_path = "annotated_" + source_file_path
+    output_path = source_file_path.split(".")
+    output_path[0] += "_annotated"
+    output_path = ".".join(output_path)
 
     with open(source_file_path, "r") as f:
         source_lines = [line.strip() for line in f.readlines()]
