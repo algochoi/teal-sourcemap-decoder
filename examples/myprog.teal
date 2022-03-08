@@ -1,0 +1,13 @@
+#pragma version 5
+
+int 3
+byte 0x03
+btoi
+==
+assert
+
+int 10
+byte 0x10
+btoi
+==
+assert
