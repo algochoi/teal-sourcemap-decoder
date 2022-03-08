@@ -1,0 +1,13 @@
+#pragma version 5
+
+int 3            // PC: [1]
+byte 0x03        // PC: [3]
+btoi             // PC: [6]
+==               // PC: [7]
+assert           // PC: [8]
+
+int 10           // PC: [9]
+byte 0x10        // PC: [11]
+btoi             // PC: [14]
+==               // PC: [15]
+assert           // PC: [16]
