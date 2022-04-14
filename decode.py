@@ -4,6 +4,8 @@ import argparse
 import json
 from typing import Dict, List
 
+import vlq
+
 
 class Decoder:
     def __init__(self) -> None:
@@ -12,13 +14,15 @@ class Decoder:
         # or inherit rules from this class.
 
     def decode_int_value(self, value: str) -> int:
-        return int(value)
+        decoded_value = vlq.base64vlq_decode(value)
+        return decoded_value[2] if decoded_value else None
 
     def decode_mapping(self, raw_map: str) -> List[int]:
         raw_mapping = raw_map.split(self.line_delimiter)
         converted_mapping = []
 
         for raw_val in raw_mapping:
+            # TODO: delete the try catch here.
             try:
                 converted_mapping.append(self.decode_int_value(raw_val))
             except ValueError:
@@ -82,7 +86,7 @@ def decode_source_map(
     annotate_map_to_source(line_map, source_file_path)
 
     if verbose:
-        print(f'Raw source map: {raw_source_map}')
+        print(f"Raw source map: {raw_source_map}")
         print(f"PC list: {pc_list}")
         print(f"Line map: {line_map}")
 
