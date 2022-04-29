@@ -4,6 +4,10 @@ This is a short python script that decodes a given source map and annotates a TE
 
 ## Usage
 
+Clone this repo, then run the `decode.py` script:
+
 `python decode.py [path to source map] [path to source file] [--verbose] [--tabulate]`
 
-A source map can be created using a particular branch on go-algorand.
+e.g. `python decode.py examples/myprog.teal.tok.map examples/myprog.teal`
+
+A source map can be created using the `-m` flag with `goal clerk compile`, e.g. `goal clerk compile <path-to-source-teal> -m`
