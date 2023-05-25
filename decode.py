@@ -20,11 +20,18 @@ class Decoder:
     def decode_mapping(self, raw_map: str) -> List[int]:
         raw_mapping = raw_map.split(self.line_delimiter)
         converted_mapping = []
+        absolute_line = 0
 
         for raw_val in raw_mapping:
-            # TODO: delete the try catch here.
+            # TODO: delete the try Except here.
+            if not raw_val:
+                converted_mapping.append(None)
+                continue
             try:
-                converted_mapping.append(self.decode_int_value(raw_val))
+                # Decode the int value and convert from relative to absolute line nums
+                actual_val = self.decode_int_value(raw_val)
+                absolute_line += actual_val
+                converted_mapping.append(absolute_line)
             except ValueError:
                 converted_mapping.append(None)
 
@@ -35,7 +42,7 @@ def get_raw_source_map(source_map_path: str) -> str:
     with open(source_map_path) as json_file:
         data = json.load(json_file)
 
-    return data["mapping"]
+    return data["mappings"]
 
 
 def line_to_pc_map(l: List[int]) -> Dict[int, List[int]]:
